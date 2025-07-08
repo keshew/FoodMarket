@@ -4,7 +4,7 @@ class NetworkManager {
     static let shared = NetworkManager()
     private init() {}
     
-    private let baseURL = URL(string: "http://fy422a.twcloack.online/app.php")!
+ 
     
     // MARK: - Регистрация
     func register(name: String, email: String, password: String, completion: @escaping (Result<String, Error>) -> Void) {
