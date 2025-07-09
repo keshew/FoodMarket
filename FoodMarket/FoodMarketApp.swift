@@ -8,6 +8,9 @@ struct FoodMarketApp: App {
                 FoodTabBarView()
             } else {
                 FoodSignView()
+                    .onAppear() {
+                        UserdefaultsManager().quitQuest()
+                    }
             }
         }
     }

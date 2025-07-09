@@ -83,7 +83,9 @@ struct FoodHomeView: View {
                                             .resizable()
                                             .overlay {
                                                 Button(action: {
-                                                    foodHomeModel.toggleFavourite(for: food)
+                                                    if !UserdefaultsManager().isGuest() {
+                                                        foodHomeModel.toggleFavourite(for: food)
+                                                    }
                                                 }) {
                                                     Image(food.isFavourite ? .fav : .notFav)
                                                         .resizable()
@@ -147,7 +149,9 @@ struct FoodHomeView: View {
                                                 }
                                             } else {
                                                 Button(action: {
-                                                    foodHomeModel.addToCart(food: food)
+                                                    if !UserdefaultsManager().isGuest() {
+                                                        foodHomeModel.addToCart(food: food)
+                                                    }
                                                 }) {
                                                     Image(.plus)
                                                         .resizable()
@@ -164,8 +168,10 @@ struct FoodHomeView: View {
                                 .cornerRadius(16)
                                 .shadow(radius: 2)
                                 .onTapGesture {
-                                    foodHomeModel.selectedFood = food
-                                    isDetail = true
+                                    if !UserdefaultsManager().isGuest() {
+                                        foodHomeModel.selectedFood = food
+                                        isDetail = true
+                                    }
                                 }
                         }
                         

@@ -22,7 +22,7 @@ struct FoodSignView: View {
                     Image(.onb)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(height: 436)
+                        .frame(height: UIScreen.main.bounds.width > 420 ? 396 : 330)
                         .padding(.top, 30)
                     
                     Rectangle()
@@ -48,9 +48,27 @@ struct FoodSignView: View {
                                         .cornerRadius(12)
                                         .padding(.horizontal)
                                 }
+                                
+                                Button(action: {
+                                    isTab = true
+                                    UserdefaultsManager().enterAsGuest()
+                                }) {
+                                    Rectangle()
+                                        .fill(.clear)
+                                        .overlay {
+                                            RoundedRectangle(cornerRadius: 12)
+                                                .stroke(Color(red: 236/255, green: 72/255, blue: 153/255))
+                                            
+                                            Text("Skip")
+                                                .InterBold(size: 16, color: Color(red: 236/255, green: 72/255, blue: 153/255))
+                                        }
+                                        .frame(height: 50)
+                                        .cornerRadius(12)
+                                        .padding(.horizontal)
+                                }
                             }
                         }
-                        .frame(height: 294)
+                        .frame(height: 344)
                         .cornerRadius(16)
                         .padding(.horizontal)
                         .shadow(radius: 8)

@@ -21,7 +21,7 @@ struct FoodLoginView: View {
                     Image(.onb)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(height: 436)
+                        .frame(height: UIScreen.main.bounds.width > 420 ? 436 : 360)
                         .padding(.top, 30)
                     
                     Rectangle()
@@ -45,9 +45,27 @@ struct FoodLoginView: View {
                                         .cornerRadius(12)
                                         .padding(.horizontal)
                                 }
+                                
+                                Button(action: {
+                                    isTab = true
+                                    UserdefaultsManager().enterAsGuest()
+                                }) {
+                                    Rectangle()
+                                        .fill(.clear)
+                                        .overlay {
+                                            RoundedRectangle(cornerRadius: 12)
+                                                .stroke(Color(red: 236/255, green: 72/255, blue: 153/255))
+                                            
+                                            Text("Skip")
+                                                .InterBold(size: 16, color: Color(red: 236/255, green: 72/255, blue: 153/255))
+                                        }
+                                        .frame(height: 50)
+                                        .cornerRadius(12)
+                                        .padding(.horizontal)
+                                }
                             }
                         }
-                        .frame(height: 228)
+                        .frame(height: 278)
                         .cornerRadius(16)
                         .padding(.horizontal)
                         .shadow(radius: 8)
@@ -61,7 +79,7 @@ struct FoodLoginView: View {
                                 .InterBold(size: 16, color: Color(red: 236/255, green: 72/255, blue: 153/255))
                         }
                     }
-                    .padding(.top, 90)
+                    .padding(.top, 60)
                 }
             }
             .scrollDisabled(UIScreen.main.bounds.width > 380  ? true : false)

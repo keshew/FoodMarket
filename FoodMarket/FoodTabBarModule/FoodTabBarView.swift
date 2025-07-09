@@ -53,7 +53,7 @@ struct CustomTabBar: View {
                     .offset(y: 35)
             }
             
-            HStack(spacing: 80) {
+            HStack(spacing: 65) {
                 TabBarItem(imageName: "tab1", tab: .Home, selectedTab: $selectedTab)
                 TabBarItem(imageName: "tab2", tab: .Cart, selectedTab: $selectedTab)
                 TabBarItem(imageName: "tab3", tab: .Orders, selectedTab: $selectedTab)

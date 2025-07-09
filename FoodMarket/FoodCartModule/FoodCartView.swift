@@ -230,31 +230,33 @@ struct FoodCartView: View {
             }
             .position(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / -40)
             
-            ZStack(alignment: .top) {
-                Rectangle()
-                    .fill(.white)
-                    .frame(height: 271)
-                
-                Rectangle()
-                    .fill(.gray.opacity(0.3))
-                    .frame(height: 0.8)
-                
-                Button(action: {
-                    placeOrder()
-                }) {
+            if !UserdefaultsManager().isGuest() {
+                ZStack(alignment: .top) {
                     Rectangle()
-                        .fill(Color(red: 236/255, green: 72/255, blue: 153/255))
-                        .overlay {
-                            Text("Place order")
-                                .InterBold(size: 16, color: .white)
-                        }
-                        .frame(height: 54)
-                        .cornerRadius(12)
-                        .padding(.horizontal)
+                        .fill(.white)
+                        .frame(height: 271)
+                    
+                    Rectangle()
+                        .fill(.gray.opacity(0.3))
+                        .frame(height: 0.8)
+                    
+                    Button(action: {
+                        placeOrder()
+                    }) {
+                        Rectangle()
+                            .fill(Color(red: 236/255, green: 72/255, blue: 153/255))
+                            .overlay {
+                                Text("Place order")
+                                    .InterBold(size: 16, color: .white)
+                            }
+                            .frame(height: 54)
+                            .cornerRadius(12)
+                            .padding(.horizontal)
+                    }
+                    .padding(.top, 20)
                 }
-                .padding(.top, 20)
+                .position(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.width > 900 ? UIScreen.main.bounds.height / 1.06 : UIScreen.main.bounds.width > 600 ? UIScreen.main.bounds.height / 1.07 : UIScreen.main.bounds.height / 1.13)
             }
-            .position(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.width > 900 ? UIScreen.main.bounds.height / 1.06 : UIScreen.main.bounds.width > 600 ? UIScreen.main.bounds.height / 1.07 : UIScreen.main.bounds.height / 1.13)
         }
         .alert(isPresented: $showAlert) {
             Alert(title: Text("Order Status"), message: Text(alertMessage), dismissButton: .default(Text("OK")))

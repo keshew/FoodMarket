@@ -50,80 +50,105 @@ struct FoodProfileView: View {
                         }
                         
                         VStack(spacing: 7) {
-                            Text("\(UserdefaultsManager().getName() ?? "")")
+                            Text("\(UserdefaultsManager().getName() ?? "Guest")")
                                 .InterBold(size: 20)
                             
-                            Text("\(UserdefaultsManager().getEmail() ?? "")")
+                            Text("\(UserdefaultsManager().getEmail() ?? "Guest email")")
                                 .Inter(size: 16)
                         }
                     }
                     
-                    Rectangle()
-                        .fill(.white)
-                        .overlay {
-                            VStack(spacing: 20) {
-                                HStack {
-                                    Text("Settings")
-                                        .InterBold(size: 18)
-                                    
-                                    Spacer()
-                                }
-                                
-                                HStack {
+                    if !UserdefaultsManager().isGuest() {
+                        Rectangle()
+                            .fill(.white)
+                            .overlay {
+                                VStack(spacing: 20) {
                                     HStack {
-                                        Image(.notif)
-                                            .resizable()
-                                            .frame(width: 30, height: 32)
+                                        Text("Settings")
+                                            .InterBold(size: 18)
                                         
-                                        Text("Notifications")
-                                            .Inter(size: 16)
-                                        
-                                        Toggle("", isOn: $foodProfileModel.isNotif)
-                                            .toggleStyle(CustomToggleStyle())
+                                        Spacer()
+                                    }
+                                    
+                                    HStack {
+                                        HStack {
+                                            Image(.notif)
+                                                .resizable()
+                                                .frame(width: 30, height: 32)
+                                            
+                                            Text("Notifications")
+                                                .Inter(size: 16)
+                                            
+                                            Toggle("", isOn: $foodProfileModel.isNotif)
+                                                .toggleStyle(CustomToggleStyle())
+                                        }
                                     }
                                 }
+                                .padding(.horizontal)
                             }
+                            .frame(height: 107)
+                            .cornerRadius(16)
                             .padding(.horizontal)
-                        }
-                        .frame(height: 107)
-                        .cornerRadius(16)
-                        .padding(.horizontal)
-                        .padding(.top)
-                        .shadow(radius: 0.5)
-                    
-                    VStack(spacing: 15) {
-                        Button(action: {
-                            UserdefaultsManager().saveLoginStatus(false)
-                            isSign = true
-                        }) {
-                            Rectangle()
-                                .fill(.clear)
-                                .overlay {
-                                    RoundedRectangle(cornerRadius: 16)
-                                        .stroke(Color(red: 236/255, green: 72/255, blue: 153/255), lineWidth: 2)
-                                    Text("Log Out")
-                                        .InterBold(size: 16, color: Color(red: 236/255, green: 72/255, blue: 153/255))
-                                }
-                                .frame(height: 54)
-                                .cornerRadius(16)
-                                .padding(.horizontal)
-                        }
-                        
-                        Button(action: {
-                            showDeleteConfirmation = true
-                        }) {
-                            Rectangle()
-                                .fill(Color(red: 236/255, green: 72/255, blue: 153/255))
-                                .overlay {
-                                    Text("Delete account")
-                                        .InterBold(size: 16, color: .white)
-                                }
-                                .frame(height: 54)
-                                .cornerRadius(16)
-                                .padding(.horizontal)
-                        }
+                            .padding(.top)
+                            .shadow(radius: 0.5)
                     }
-                    .padding(.top)
+                    
+                    if !UserdefaultsManager().isGuest() {
+                        VStack(spacing: 15) {
+                            Button(action: {
+                                UserdefaultsManager().saveLoginStatus(false)
+                                UserdefaultsManager().clearAllUserData()
+                                isSign = true
+                            }) {
+                                Rectangle()
+                                    .fill(.clear)
+                                    .overlay {
+                                        RoundedRectangle(cornerRadius: 16)
+                                            .stroke(Color(red: 236/255, green: 72/255, blue: 153/255), lineWidth: 2)
+                                        Text("Log Out")
+                                            .InterBold(size: 16, color: Color(red: 236/255, green: 72/255, blue: 153/255))
+                                    }
+                                    .frame(height: 54)
+                                    .cornerRadius(16)
+                                    .padding(.horizontal)
+                            }
+                            
+                            Button(action: {
+                                showDeleteConfirmation = true
+                                UserdefaultsManager().clearAllUserData()
+                            }) {
+                                Rectangle()
+                                    .fill(Color(red: 236/255, green: 72/255, blue: 153/255))
+                                    .overlay {
+                                        Text("Delete account")
+                                            .InterBold(size: 16, color: .white)
+                                    }
+                                    .frame(height: 54)
+                                    .cornerRadius(16)
+                                    .padding(.horizontal)
+                            }
+                        }
+                        .padding(.top)
+                    } else {
+                        VStack(spacing: 15) {
+                            Button(action: {
+                                UserdefaultsManager().quitQuest()
+                                UserdefaultsManager().deleteName()
+                                isSign = true
+                            }) {
+                                Rectangle()
+                                    .fill(Color(red: 236/255, green: 72/255, blue: 153/255))
+                                    .overlay {
+                                        Text("Create account")
+                                            .InterBold(size: 16, color: .white)
+                                    }
+                                    .frame(height: 54)
+                                    .cornerRadius(16)
+                                    .padding(.horizontal)
+                            }
+                        }
+                        .padding(.top)
+                    }
                 }
                 .padding(.top, 120)
             }

@@ -56,7 +56,7 @@ struct FoodDetailView: View {
                     
                     Image(food!.imageName)
                         .resizable()
-                        .frame(height: 400)
+                        .frame(height: UIScreen.main.bounds.width > 420 ? 400 : 330)
                         .clipShape(RoundedCorners(radius: 66, corners: [.bottomLeft, .bottomRight]))
                         .padding(.top, 8)
                     
