@@ -146,7 +146,9 @@ struct FoodDetailView: View {
                         }
                         
                         Button(action: {
-                            
+                            if let currentQuantity = food?.quantity {
+                                food?.quantity = currentQuantity + currentQuantity
+                            }
                         }) {
                             Rectangle()
                                 .fill(Color(red: 236/255, green: 72/255, blue: 153/255))

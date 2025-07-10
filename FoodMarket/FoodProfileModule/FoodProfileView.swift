@@ -115,7 +115,6 @@ struct FoodProfileView: View {
                             
                             Button(action: {
                                 showDeleteConfirmation = true
-                                UserdefaultsManager().clearAllUserData()
                             }) {
                                 Rectangle()
                                     .fill(Color(red: 236/255, green: 72/255, blue: 153/255))
