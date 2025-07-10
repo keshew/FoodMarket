@@ -10,7 +10,7 @@ struct FoodHomeView: View {
     
     @State private var selectedCategory: Category = .All
     @State var isDetail = false
-
+    @State private var selectedFoodID: UUID? = nil
     
     var body: some View {
         ZStack {
@@ -92,11 +92,8 @@ struct FoodHomeView: View {
                                                         .aspectRatio(contentMode: .fit)
                                                         .frame(width: 32, height: 32)
                                                 }
-//                                                .offset(x: 45, y: -40)
                                                 .offset(x: UIScreen.main.bounds.width > 900 ? 185 : UIScreen.main.bounds.width > 600 ? 185 : 45, y: UIScreen.main.bounds.width > 900 ? -80 : UIScreen.main.bounds.width > 600 ? -80 : -40)
                                             }
-//                                            .frame(width: 147, height: 138)
-//                                            .frame(width: 441, height: 236)
                                             .frame(width: UIScreen.main.bounds.width > 900 ? 441 : UIScreen.main.bounds.width > 600 ? 341 : 147, height: UIScreen.main.bounds.width > 900 ? 236 : UIScreen.main.bounds.width > 600 ? 236 : 138)
                                             .cornerRadius(16)
                                         
@@ -162,15 +159,12 @@ struct FoodHomeView: View {
                                     }
                                     .padding(.horizontal, 15)
                                 }
-//                                .frame(width: 181, height: 268)
-//                                .frame(width: 481, height: 368)
                                 .frame(width: UIScreen.main.bounds.width > 900 ? 481 : UIScreen.main.bounds.width > 600 ? 381 : 181, height: UIScreen.main.bounds.width > 900 ? 368 : UIScreen.main.bounds.width > 600 ? 368 : 268)
                                 .cornerRadius(16)
                                 .shadow(radius: 2)
                                 .onTapGesture {
                                     if !UserdefaultsManager().isGuest() {
-                                        foodHomeModel.selectedFood = food
-                                        isDetail = true
+                                        selectedFoodID = food.id
                                     }
                                 }
                         }
@@ -181,12 +175,12 @@ struct FoodHomeView: View {
                 }
             }
         }
-        .fullScreenCover(isPresented: $isDetail, onDismiss: {
-            if let updatedFood = foodHomeModel.selectedFood {
-                foodHomeModel.updateFood(updatedFood)
+        .fullScreenCover(item: $selectedFoodID) { id in
+            if let food = foodHomeModel.foods.first(where: { $0.id == id }) {
+                FoodDetailView(food: foodHomeModel.binding(for: food))
+            } else {
+                EmptyView()
             }
-        }) {
-            FoodDetailView(food: $foodHomeModel.selectedFood)
         }
     }
 }
@@ -194,6 +188,10 @@ struct FoodHomeView: View {
 
 #Preview {
     FoodHomeView()
+}
+
+extension UUID: Identifiable {
+    public var id: UUID { self }
 }
 
 struct CustomSearchBar: View {

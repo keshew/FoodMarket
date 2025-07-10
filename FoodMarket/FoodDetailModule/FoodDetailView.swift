@@ -2,7 +2,7 @@ import SwiftUI
 
 struct FoodDetailView: View {
     @StateObject var foodDetailModel =  FoodDetailViewModel()
-    @Binding var food: Food?
+    @Binding var food: Food
     @Environment(\.presentationMode) var presentationMode
     var body: some View {
         ZStack {
@@ -45,16 +45,16 @@ struct FoodDetailView: View {
                         Spacer()
                         
                         Button(action: {
-                            food!.isFavourite.toggle()
+                            food.isFavourite.toggle()
                         }) {
-                            Image(food!.isFavourite ? .fav : .notFav2)
+                            Image(food.isFavourite ? .fav : .notFav2)
                                 .resizable()
                                 .frame(width: 40, height: 40)
                         }
                     }
                     .padding(.horizontal)
                     
-                    Image(food!.imageName)
+                    Image(food.imageName)
                         .resizable()
                         .frame(height: UIScreen.main.bounds.width > 420 ? 400 : 330)
                         .clipShape(RoundedCorners(radius: 66, corners: [.bottomLeft, .bottomRight]))
@@ -62,18 +62,18 @@ struct FoodDetailView: View {
                     
                     HStack {
                         VStack(alignment: .leading, spacing: 15) {
-                            Text(food!.name)
+                            Text(food.name)
                                 .InterBold(size: 24)
                             
                             HStack {
                                 Image(.stars)
                                     .resizable()
                                     .frame(width: 92, height: 16)
-                                Text(food!.ration)
+                                Text(food.ration)
                                     .Inter(size: 16, color: Color(red: 107/255, green: 114/255, blue: 128/255))
                             }
                             
-                            Text(food!.shortDescription)
+                            Text(food.shortDescription)
                                 .Inter(size: 16, color: Color(red: 75/255, green: 85/255, blue: 99/255))
                             
                             Text("Ingredients")
@@ -83,10 +83,10 @@ struct FoodDetailView: View {
                                 LazyVGrid(columns: [GridItem(.flexible()),
                                                     GridItem(.flexible()),
                                                     GridItem(.flexible())], spacing: 15) {
-                                    ForEach(0..<food!.ingredients.count, id: \.self) { index in
+                                    ForEach(0..<food.ingredients.count, id: \.self) { index in
                                         VStack {
-                                            Text(food!.ingredients[index])
-                                                .Inter(size: 14, color:   foodDetailModel.contact.colorFont[index])
+                                            Text(food.ingredients[index])
+                                                .Inter(size: 14, color: foodDetailModel.contact.colorFont[index])
                                                 .lineLimit(1)
                                                 .minimumScaleFactor(0.7)
                                                 .padding(.horizontal, 10)
@@ -99,7 +99,7 @@ struct FoodDetailView: View {
                                         }
                                     }
                                 }
-                                .frame(width: UIScreen.main.bounds.width / 1.7)
+                                                    .frame(width: UIScreen.main.bounds.width / 1.7)
                                 
                                 Spacer()
                             }
@@ -114,8 +114,8 @@ struct FoodDetailView: View {
                         HStack {
                             HStack(spacing: 15) {
                                 Button(action: {
-                                    if let currentQuantity = food?.quantity, currentQuantity > 0 {
-                                        food?.quantity = max(0, currentQuantity - 100)
+                                    if food.quantity > 0 {
+                                        food.quantity = max(0, food.quantity - 100)
                                     }
                                 }) {
                                     Image(.minus)
@@ -124,13 +124,11 @@ struct FoodDetailView: View {
                                     
                                 }
                                 
-                                Text("\(food?.quantity ?? 0)g")
+                                Text("\(food.quantity)g")
                                     .InterBold(size: 15)
                                 
                                 Button(action: {
-                                    if let currentQuantity = food?.quantity {
-                                        food?.quantity = currentQuantity + 100
-                                    }
+                                    food.quantity = food.quantity + 100
                                 }) {
                                     Image(.plus2)
                                         .resizable()
@@ -141,13 +139,16 @@ struct FoodDetailView: View {
                             
                             Spacer()
                             
-                            Text("$\(food!.price)")
+                            Text("$\(food.price)")
                                 .InterBold(size: 20)
                         }
                         
                         Button(action: {
-                            if let currentQuantity = food?.quantity {
-                                food?.quantity = currentQuantity + currentQuantity
+                            if food.quantity == 0 {
+                                food.isAdded = true
+                                food.quantity += 100
+                            } else {
+                                food.quantity = food.quantity + food.quantity
                             }
                         }) {
                             Rectangle()
@@ -159,7 +160,6 @@ struct FoodDetailView: View {
                                 .frame(height: 56)
                                 .cornerRadius(24)
                         }
-
                     }
                     .padding(.top, UIScreen.main.bounds.width > 900 ? 520 : UIScreen.main.bounds.width > 600 ? 350 : 50)
                     .padding(.horizontal)

@@ -255,7 +255,7 @@ struct FoodCartView: View {
                     }
                     .padding(.top, 20)
                 }
-                .position(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.width > 900 ? UIScreen.main.bounds.height / 1.06 : UIScreen.main.bounds.width > 600 ? UIScreen.main.bounds.height / 1.07 : UIScreen.main.bounds.height / 1.13)
+                .position(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.width > 900 ? UIScreen.main.bounds.height / 1.06 : UIScreen.main.bounds.width > 600 ? UIScreen.main.bounds.height / 1.07 : UIScreen.main.bounds.width > 430 ? UIScreen.main.bounds.height / 1.13 : UIScreen.main.bounds.height / 1.15)
             }
         }
         .alert(isPresented: $showAlert) {

@@ -3,7 +3,6 @@ import SwiftUI
 class FoodHomeViewModel: ObservableObject {
     let contact = FoodHomeModel()
     @Published var selectedCategory: Category = .All
-    @Published var selectedFood: Food? = nil
     @Published var foods: [Food] = []
     private let userDefaultsKey = "SavedFoods"
     
@@ -99,5 +98,15 @@ class FoodHomeViewModel: ObservableObject {
             }
             saveFoods()
         }
+    }
+    
+    func binding(for food: Food) -> Binding<Food> {
+        guard let index = foods.firstIndex(where: { $0.id == food.id }) else {
+            fatalError("Food not found")
+        }
+        return Binding(
+            get: { self.foods[index] },
+            set: { self.foods[index] = $0; self.saveFoods() }
+        )
     }
 }
